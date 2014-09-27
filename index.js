@@ -2,7 +2,8 @@ var url = require('url');
 var path = require('path');
 
 module.exports = function (stylecow) {
-	return {
+
+	stylecow.addTask({
 		Import: function (importRule) {
 			var file = importRule.getData('sourceFile');
 
@@ -44,5 +45,5 @@ module.exports = function (stylecow) {
 
 			importRule.remove();
 		}
-	};
+	});
 };
