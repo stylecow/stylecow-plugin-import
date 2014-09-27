@@ -14,7 +14,7 @@ module.exports = function (stylecow) {
 
 			file = path.dirname(file) + '/' + importRule.url;
 
-			var root = stylecow.readFile(file);
+			var root = stylecow.createFromFile(file);
 
 			//Fix relative url
 			var relative = path.dirname(importRule.url);
