@@ -4,46 +4,42 @@ var path = require('path');
 module.exports = function (stylecow) {
 
 	stylecow.addTask({
-		Import: function (importRule) {
-			var file = importRule.getData('sourceFile');
-
-			//is not relative?
-			if (!file || url.parse(importRule.url).hostname || (importRule.url[0] === '/')) {
-				return;
-			}
-
-			file = path.dirname(file) + '/' + importRule.url;
-
-			var root = stylecow.createFromFile(file);
-
-			//Fix relative url
-			var relative = path.dirname(importRule.url);
-
-			root.search('Function', 'url').forEach(function (fn) {
-				var src = fn[0].name;
+		AtRule: {
+			"@import": function (atrule) {
+				var file = atrule.getData('sourceFile');
+				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).value;
 
 				//is not relative?
-				if (!src || url.parse(src).hostname || (src[0] === '/')) {
+				if (!file || url.parse(importUrl).hostname || (importUrl[0] === '/')) {
 					return;
 				}
 
-				if (src[0] === '"' || src[0] === "'") {
-					src = relative + '/' + src.slice(1, -1);
-				} else {
-					src = relative + '/' + src;
+				file = path.dirname(file) + '/' + importUrl;
+
+				var root = stylecow.createFromFile(file);
+
+				//Fix relative urls
+				var relative = path.dirname(importUrl);
+
+				root.search({type: 'Function', name: 'url'}).forEach(function (fn) {
+					var keyword = fn[0][0];
+					var src = keyword.name;
+
+					//is not relative?
+					if (!src || url.parse(src).hostname || (src[0] === '/')) {
+						return;
+					}
+
+					keyword.name = relative + '/' + src;
+				});
+
+				//Insert the imported code
+				while (root.length) {
+					atrule.insertBefore(root[0].setData('sourceFile', file));
 				}
 
-				fn[0].name = "'" + src + "'";
-			});
-
-			//Insert the imported code
-			var child;
-
-			while (root.length) {
-				importRule.insertBefore(root[0].setData('sourceFile', file));
+				atrule.remove();
 			}
-
-			importRule.remove();
 		}
 	});
 };
