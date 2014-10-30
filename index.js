@@ -5,9 +5,9 @@ module.exports = function (stylecow) {
 
 	stylecow.addTask({
 		AtRule: {
-			"@import": function (atrule) {
+			"import": function (atrule) {
 				var file = atrule.getData('sourceFile');
-				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).value;
+				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).getValue().join('');
 
 				//is not relative?
 				if (!file || url.parse(importUrl).hostname || (importUrl[0] === '/')) {
