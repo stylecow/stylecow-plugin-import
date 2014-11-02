@@ -7,7 +7,7 @@ module.exports = function (stylecow) {
 		AtRule: {
 			"import": function (atrule) {
 				var file = atrule.getData('sourceFile');
-				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).getValue().join('');
+				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).getContent().join('');
 
 				//is not relative?
 				if (!file || url.parse(importUrl).hostname || (importUrl[0] === '/')) {
@@ -35,7 +35,7 @@ module.exports = function (stylecow) {
 
 				//Insert the imported code
 				while (root.length) {
-					atrule.insertBefore(root[0].setData('sourceFile', file));
+					atrule.before(root[0].setData('sourceFile', file));
 				}
 
 				atrule.remove();
