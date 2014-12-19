@@ -7,26 +7,46 @@ module.exports = function (stylecow) {
 		AtRule: {
 			"import": function (atrule) {
 				var file = atrule.getData('sourceFile');
-				var importUrl = atrule.searchFirst({type: "Function", name: "url"}).getContent().join('');
 
-				//is not relative?
-				if (!file || url.parse(importUrl).hostname || (importUrl[0] === '/')) {
+				if (!file) {
+					return;
+				}
+
+				var importUrl = atrule
+					.searchFirst({
+						type: 'Function',
+						name: 'url'
+					})
+					.searchFirst({
+						type: ['Keyword', 'String']
+					})
+					.name;
+
+				//is absolute?
+				if (url.parse(importUrl).hostname || (importUrl[0] === '/')) {
 					return;
 				}
 
 				file = path.dirname(file) + '/' + importUrl;
 
-				var root = stylecow.createFromFile(file);
+				var root = stylecow.Root.create(stylecow.Reader.readFile(file));
 
 				//Fix relative urls
 				var relative = path.dirname(importUrl);
 
-				root.search({type: 'Function', name: 'url'}).forEach(function (fn) {
-					var keyword = fn[0][0];
+				root
+				.search({
+					type: 'Function',
+					name: 'url'
+				})
+				.search({
+					type: ['Keyword', 'String']
+				})
+				.forEach(function (keyword) {
 					var src = keyword.name;
 
 					//is not relative?
-					if (!src || url.parse(src).hostname || (src[0] === '/')) {
+					if (url.parse(src).hostname || (src[0] === '/')) {
 						return;
 					}
 
@@ -35,7 +55,7 @@ module.exports = function (stylecow) {
 
 				//Insert the imported code
 				while (root.length) {
-					atrule.before(root[0].setData('sourceFile', file));
+					atrule.before(root[0]);
 				}
 
 				atrule.remove();
