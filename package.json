@@ -1,7 +1,7 @@
 {
 	"name": "stylecow-plugin-import",
 	"description": "Stylecow plugin to include the @import css files with relative paths in the main css file",
-	"version": "2.0.0",
+	"version": "3.0.0",
 	"author": "Oscar Otero <oom@oscarotero.com>",
 	"homepage": "https://github.com/stylecow/stylecow-plugin-import",
 	"bugs": "https://github.com/stylecow/stylecow-plugin-import/issues",
