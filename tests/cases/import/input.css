@@ -1,0 +1,9 @@
+div {
+	color: blue;
+}
+
+@import "styles.css";
+
+div {
+	color: red;
+}

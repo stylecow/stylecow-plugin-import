@@ -1,0 +1,11 @@
+div {
+	color: blue;
+}
+@media screen and (min-width: 20em) {
+	div {
+		color: black;
+	}
+}
+div {
+	color: red;
+}

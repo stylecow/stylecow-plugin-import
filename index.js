@@ -9,59 +9,69 @@ module.exports = function (stylecow) {
 			name: 'import'
 		},
 		fn: function (atrule) {
-			var file = atrule.getData('sourceFile');
+			var file = atrule.getData('file');
 
 			if (!file) {
 				return;
 			}
 
-			var importUrl = atrule
-				.searchFirst({
-					type: 'Function',
-					name: 'url'
-				})
-				.searchFirst({
-					type: ['Keyword', 'String']
-				})
-				.name;
+			var importUrl = atrule.get('String').name;
 
 			//is absolute?
 			if (url.parse(importUrl).hostname || (importUrl[0] === '/')) {
 				return;
 			}
 
-			file = path.dirname(file) + '/' + importUrl;
+			file = path.join(path.dirname(file), importUrl);
 
-			var root = stylecow.Root.create(stylecow.Reader.readFile(file));
+			//prevent infinite recursion
+			if (atrule.getAllData('file').indexOf(file) !== -1) {
+				atrule.remove();
+				return;
+			}
+
+			var root = stylecow.parseFile(file);
 
 			//Fix relative urls
 			var relative = path.dirname(importUrl);
 
 			root
-			.search({
+			.getAll({
 				type: 'Function',
 				name: 'url'
 			})
-			.search({
-				type: ['Keyword', 'String']
-			})
-			.forEach(function (keyword) {
-				var src = keyword.name;
+			.getAll('String')
+			.forEach(function (string) {
+				var src = string.name;
 
 				//is not relative?
 				if (url.parse(src).hostname || (src[0] === '/')) {
 					return;
 				}
 
-				keyword.name = relative + '/' + src;
+				string.name = relative + '/' + src;
 			});
 
-			//Insert the imported code
-			while (root.length) {
-				atrule.before(root[0]);
-			}
+			if (atrule.has('MediaQueries')) {
+				var media = (new stylecow.Media());
+				media.push(atrule.get('MediaQueries'));
+				media.push(new stylecow.Block());
 
-			atrule.remove();
+				var block = media.get('Block');
+
+				//Insert the imported code
+				while (root.length) {
+					block.push(root[0]);
+				}
+
+				atrule.replaceWith(media);
+			} else {
+				while (root.length) {
+					atrule.before(root[0]);
+				}
+
+				atrule.remove();
+			}
 		}
 	});
 };

@@ -1,0 +1,9 @@
+div {
+	color: blue;
+}
+
+@import "styles.css" screen and (min-width: 20em);
+
+div {
+	color: red;
+}

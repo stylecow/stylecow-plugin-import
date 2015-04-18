@@ -1,13 +1,19 @@
 {
 	"name": "stylecow-plugin-import",
 	"description": "Stylecow plugin to include the @import css files with relative paths in the main css file",
-	"version": "3.0.0",
+	"version": "4.0.0",
 	"author": "Oscar Otero <oom@oscarotero.com>",
 	"homepage": "https://github.com/stylecow/stylecow-plugin-import",
 	"bugs": "https://github.com/stylecow/stylecow-plugin-import/issues",
 	"repository": {
 		"type": "git",
 		"url": "https://github.com/stylecow/stylecow-plugin-import.git"
+	},
+	"devDependencies": {
+		"stylecow-parser": "2.*"
+	},
+	"scripts": {
+		"test": "mocha tests/cases.js"
 	},
 	"main": "index.js",
 	"license": "MIT"
