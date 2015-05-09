@@ -9,12 +9,6 @@ module.exports = function (stylecow) {
 			name: 'import'
 		},
 		fn: function (atrule) {
-			var file = atrule.getData('file');
-
-			if (!file) {
-				return;
-			}
-
 			var importUrl = atrule.get('String').name;
 
 			//is absolute?
@@ -22,7 +16,14 @@ module.exports = function (stylecow) {
 				return;
 			}
 
-			file = path.join(path.dirname(file), importUrl);
+			//get the root file
+			var rootFile = atrule.getParent('Root').getData('file');
+
+			if (!rootFile) {
+				return;
+			}
+
+			var file = path.join(path.dirname(rootFile), importUrl);
 
 			//prevent infinite recursion
 			if (atrule.getAllData('file').indexOf(file) !== -1) {
@@ -49,7 +50,7 @@ module.exports = function (stylecow) {
 					return;
 				}
 
-				string.name = relative + '/' + src;
+				string.name = path.join(relative, src);
 			});
 
 			if (atrule.has('MediaQueries')) {

@@ -1,0 +1,9 @@
+div {
+	color: blue;
+}
+
+@import "more/1.css";
+
+div {
+	color: red;
+}
