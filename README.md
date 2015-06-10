@@ -1,6 +1,8 @@
 stylecow plugin import
 ======================
 
+[![Build Status](https://travis-ci.org/stylecow/stylecow-plugin-import.svg)](https://travis-ci.org/stylecow/stylecow-plugin-import)
+
 Stylecow plugin to include the @import css files with relative paths in the main css file.
 
 You write:
@@ -26,3 +28,5 @@ And stylecow converts to:
     color: blue;
 }
 ```
+
+More demos in [the tests folder](https://github.com/stylecow/stylecow-plugin-import/tree/master/tests/cases)
