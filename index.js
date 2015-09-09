@@ -1,9 +1,11 @@
+"use strict";
+
 var url = require('url');
 var path = require('path');
 
-module.exports = function (stylecow) {
+module.exports = function (tasks, stylecow) {
 
-	stylecow.addTask({
+	tasks.addTask({
 		filter: {
 			type: 'AtRule',
 			name: 'import'
@@ -17,7 +19,7 @@ module.exports = function (stylecow) {
 			}
 
 			//get the root file
-			var rootFile = atrule.getParent('Root').getData('file');
+			var rootFile = atrule.getAncestor('Root').getData('file');
 
 			if (!rootFile) {
 				return;
@@ -36,8 +38,7 @@ module.exports = function (stylecow) {
 			//Fix relative urls
 			var relative = path.dirname(importUrl);
 
-			root
-			.getAll({
+			root.getAll({
 				type: 'Function',
 				name: 'url'
 			})
@@ -54,11 +55,11 @@ module.exports = function (stylecow) {
 			});
 
 			if (atrule.has('MediaQueries')) {
-				var media = (new stylecow.Media());
-				media.push(atrule.get('MediaQueries'));
-				media.push(new stylecow.Block());
+				var media = (new stylecow.NestedAtRule()).setName('media');
+				var block = new stylecow.Block();
 
-				var block = media.get('Block');
+				media.push(atrule.get('MediaQueries'));
+				media.push(block);
 
 				//Insert the imported code
 				while (root.length) {
