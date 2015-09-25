@@ -56,6 +56,10 @@ module.exports = function (tasks, stylecow) {
                 }
 
                 string.name = path.join(relative, src);
+
+                if (path.sep === '\\') {
+                    string.name = string.name.replace(/\\/g, '/');
+                }
             });
 
             if (atrule.has('MediaQueries')) {
