@@ -62,6 +62,16 @@ module.exports = function (tasks, stylecow) {
                 }
             });
 
+            //Remove inner sourcemaps
+            let comment = root.getChild({
+                type: 'Comment',
+                name: /^[#@]\ssourceMappingURL=/
+            });
+
+            if (comment) {
+                comment.remove();
+            }
+
             if (atrule.has('MediaQueries')) {
                 let media = (new stylecow.NestedAtRule()).setName('media'),
                     block = new stylecow.Block();

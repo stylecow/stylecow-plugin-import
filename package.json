@@ -1,7 +1,7 @@
 {
   "name": "stylecow-plugin-import",
   "description": "Stylecow plugin to include the @import css files with relative paths in the main css file",
-  "version": "5.0.1",
+  "version": "5.0.2",
   "engines": {
     "node": ">=4.0"
   },
