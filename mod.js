@@ -1,7 +1,7 @@
 import { join, dirname, sep } from "https://deno.land/std/path/mod.ts";
 import { parseFile } from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/mod.js";
-import NestedAtRule from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/lib/css/nested-at-rule.js";
-import Block from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/lib/css/block.js";
+import NestedAtRule from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/css/nested-at-rule.js";
+import Block from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/css/block.js";
 
 export default function (tasks) {
   tasks.addTask({
