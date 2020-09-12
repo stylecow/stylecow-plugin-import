@@ -1,7 +1,4 @@
-stylecow plugin import
-======================
-
-[![Build Status](https://travis-ci.org/stylecow/stylecow-plugin-import.svg)](https://travis-ci.org/stylecow/stylecow-plugin-import)
+# stylecow plugin import
 
 Stylecow plugin to include the @import css files with relative paths in the main css file.
 
