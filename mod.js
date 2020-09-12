@@ -1,7 +1,7 @@
 import { join, dirname, sep } from "https://deno.land/std/path/mod.ts";
-import { parseFile } from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/mod.js";
-import NestedAtRule from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/css/nested-at-rule.js";
-import Block from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/css/block.js";
+import { parseFile } from "https://deno.land/x/stylecow_core/mod.js";
+import NestedAtRule from "https://deno.land/x/stylecow_core/css/nested-at-rule.js";
+import Block from "https://deno.land/x/stylecow_core/css/block.js";
 
 export default function (tasks) {
   tasks.addTask({
@@ -55,16 +55,6 @@ export default function (tasks) {
             string.name = string.name.replace(/\\/g, "/");
           }
         });
-
-      //Remove inner sourcemaps
-      const comment = root.getChild({
-        type: "Comment",
-        name: /^[#@]\ssourceMappingURL=/,
-      });
-
-      if (comment) {
-        comment.remove();
-      }
 
       if (atrule.has("MediaQueries")) {
         const media = new NestedAtRule().setName("media"),

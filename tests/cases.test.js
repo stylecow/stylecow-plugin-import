@@ -1,7 +1,7 @@
 import {
   Test,
   Tasks,
-} from "https://raw.githubusercontent.com/stylecow/stylecow-core/deno/mod.js";
+} from "https://deno.land/x/stylecow_core/mod.js";
 import Import from "../mod.js";
 
 const tests = new Test("tests/cases");

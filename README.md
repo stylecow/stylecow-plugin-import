@@ -26,4 +26,3 @@ And stylecow converts to:
 }
 ```
 
-More demos in [the tests folder](https://github.com/stylecow/stylecow-plugin-import/tree/master/tests/cases)
