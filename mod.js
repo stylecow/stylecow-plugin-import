@@ -14,7 +14,7 @@ export default function (tasks) {
 
       //is absolute?
       try {
-        return URL(importUrl);
+        return new URL(importUrl);
       } catch (err) {}
 
       //get the root file
@@ -46,7 +46,7 @@ export default function (tasks) {
           //is not relative?
           try {
             if (src[0] === "/") return;
-            return URL(importUrl);
+            return new URL(src);
           } catch (err) {}
 
           string.name = join(relative, src);
